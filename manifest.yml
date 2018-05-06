@@ -1,0 +1,9 @@
+---
+applications:
+- name: cna-spring-hello
+  memory: 1024M
+  buildpack: java_buildpack
+  services:
+  - postgres-cna-spring-first
+  
+  

@@ -1,0 +1,51 @@
+# deployment-template.yml
+# ----------------------------------------------------------------------------
+# OpenShift deployment template
+# ----------------------------------------------------------------------------
+# @author  mtheis
+# @version 1.0
+# ----------------------------------------------------------------------------
+# 
+kind: Template
+apiVersion: v1
+metadata:
+  annotations:
+  labels:
+    app: cna-spring-first
+    deployment: cna-spring-first
+    deploymentconfig: cna-spring-first
+spec:
+  containers:
+    - env:
+        - name: POSTGRESQL_SERVICE
+          value: postgresql-spring-first.hm-fwp-cna-development.svc
+        - name: POSTGRESQL_USER
+          valueFrom:
+            secretKeyRef:
+              key: database-user
+              name: postgresql-spring-first
+        - name: POSTGRESQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: database-password
+              name: postgresql-spring-first
+        - name: POSTGRESQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              key: database-name
+              name: postgresql-spring-first
+      image: >-
+        hmfwpcna/cna-spring-first:latest
+      imagePullPolicy: IfNotPresent
+      name: cna-spring-first
+      ports:
+        - containerPort: 8080
+          protocol: TCP
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  terminationGracePeriodSeconds: 30

@@ -1,0 +1,39 @@
+# docker-compose.yml
+# ----------------------------------------------------------------------------
+# Composes Docker containers and volumes to a runnable Spring Boot application
+# connecting to a PostgreSQL database
+# ----------------------------------------------------------------------------
+#
+---
+version: '2'
+
+services:
+
+  postgres-first:
+    image: postgres:latest
+    volumes:
+      - postgres-first-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: first
+      POSTGRES_PASSWORD: changeit
+      POSTGRES_DB: db_first
+
+  springboot-first:
+    image: hmfwpcna/cna-spring-first:latest
+    ports:
+      - "8080:8080"
+    environment:
+      POSTGRESQL_SERVICE: postgres-first
+      POSTGRESQL_USER: first
+      POSTGRESQL_PASSWORD: changeit
+      POSTGRESQL_DATABASE: db_first
+      
+volumes:
+
+  postgres-first-data:
+
+
+
+
+
+  
