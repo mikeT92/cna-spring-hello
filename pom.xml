@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>edu.hm.cs.fwp.cloud</groupId>
 	<artifactId>cna-spring-hello</artifactId>
-	<version>0.9.0</version>
+	<version>0.9.3</version>
 	<packaging>jar</packaging>
 	<name>cna-spring-hello</name>
 	<description>Simplest possible cloud native java application based on Spring Boot / Spring Cloud</description>
@@ -13,9 +13,6 @@
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.0.1.RELEASE</version>
 	</parent>
-	<prerequisites>
-		<maven>3.5</maven>
-	</prerequisites>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -23,6 +20,17 @@
 		<docker.organization.name>hmfwpcna</docker.organization.name>
 		<docker.image.name>${docker.organization.name}/${project.artifactId}</docker.image.name>
 	</properties>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>Edgware.SR3</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -37,6 +45,16 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<!-- Spring Cloud Connectors for cloud platform integration -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-cloud-connectors</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>edu.hm.cs.fwp.cloud</groupId>
+			<artifactId>cna-openshift-cloud-connector</artifactId>
+			<version>0.8.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -63,12 +81,39 @@
 					<artifactId>docker-maven-plugin</artifactId>
 					<version>0.25.2</version>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-enforcer-plugin</artifactId>
+					<version>3.0.0-M1</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>enforce-versions</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<requireMavenVersion>
+									<version>3.5</version>
+								</requireMavenVersion>
+								<requireJavaVersion>
+									<version>1.8</version>
+								</requireJavaVersion>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

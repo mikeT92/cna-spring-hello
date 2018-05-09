@@ -40,9 +40,9 @@ objects:
       spec:
         containers:
         - env:
-          - name: AT41_CNAP_TYPE
-            value: OPENSHIFT
-          image: hmfwpcna/cna-spring-hello:0.9.0
+          - name: CNAP_CLOUD
+            value: openshift
+          image: hmfwpcna/cna-spring-hello:0.9.3
           imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3
@@ -79,13 +79,6 @@ objects:
     test: false
     triggers:
     - type: ConfigChange
-  status:
-    availableReplicas: 0
-    latestVersion: 0
-    observedGeneration: 0
-    replicas: 0
-    unavailableReplicas: 0
-    updatedReplicas: 0
 - apiVersion: v1
   kind: Service
   metadata:
@@ -118,7 +111,6 @@ objects:
       project: cloudtrain
     name: cna-spring-hello
   spec:
-    host: cna-spring-hello-hm-fwp-cna-development.a3c1.starter-us-west-1.openshiftapps.com
     port:
       targetPort: 8080-tcp
     tls:
@@ -129,13 +121,3 @@ objects:
       name: cna-spring-hello
       weight: 100
     wildcardPolicy: None
-  status:
-    ingress:
-    - conditions:
-      - lastTransitionTime: 2018-05-06T06:58:54Z
-        status: "True"
-        type: Admitted
-      host: cna-spring-hello-hm-fwp-cna-development.a3c1.starter-us-west-1.openshiftapps.com
-      routerCanonicalHostname: elb.a3c1.starter-us-west-1.openshiftapps.com
-      routerName: router
-      wildcardPolicy: None
