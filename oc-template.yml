@@ -12,13 +12,13 @@ objects:
     creationTimestamp: null
     generation: 1
     labels:
-      app: cna-spring-hello
-    name: cna-spring-hello
+      app: cna-spring-persistence
+    name: cna-spring-persistence
   spec:
     replicas: 1
     selector:
-      app: cna-spring-hello
-      deploymentconfig: cna-spring-hello
+      app: cna-spring-persistence
+      deploymentconfig: cna-spring-persistence
     strategy:
       activeDeadlineSeconds: 21600
       resources: {}
@@ -35,14 +35,31 @@ objects:
           openshift.io/generated-by: OpenShiftWebConsole
         creationTimestamp: null
         labels:
-          app: cna-spring-hello
-          deploymentconfig: cna-spring-hello
+          app: cna-spring-persistence
+          deploymentconfig: cna-spring-persistence
       spec:
         containers:
         - env:
-          - name: AT41_CNAP_TYPE
-            value: OPENSHIFT
-          image: hmfwpcna/cna-spring-hello:0.9.0
+          - name: CNAP_CLOUD
+            value: openshift
+          - name: POSTGRES_DB_HOST
+            value: postgresql-spring-persistence.hm-fwp-cna-development.svc
+          - name: POSTGRES_DB_USER
+            valueFrom:
+              secretKeyRef:
+                key: database-user
+                name: postgresql-spring-persistence
+          - name: POSTGRES_DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: database-password
+                name: postgresql-spring-persistence
+          - name: POSTGRES_DB_NAME
+            valueFrom:
+              secretKeyRef:
+                key: database-name
+                name: postgresql-spring-persistence
+          image: hmfwpcna/cna-spring-persistence:0.8.0
           imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3
@@ -54,7 +71,7 @@ objects:
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 8
-          name: cna-spring-hello
+          name: cna-spring-persistence
           ports:
           - containerPort: 8080
             protocol: TCP
@@ -79,13 +96,6 @@ objects:
     test: false
     triggers:
     - type: ConfigChange
-  status:
-    availableReplicas: 0
-    latestVersion: 0
-    observedGeneration: 0
-    replicas: 0
-    unavailableReplicas: 0
-    updatedReplicas: 0
 - apiVersion: v1
   kind: Service
   metadata:
@@ -93,8 +103,8 @@ objects:
       openshift.io/generated-by: OpenShiftWebConsole
     creationTimestamp: null
     labels:
-      app: cna-spring-hello
-    name: cna-spring-hello
+      app: cna-spring-persistence
+    name: cna-spring-persistence
   spec:
     ports:
     - name: 8080-tcp
@@ -102,7 +112,7 @@ objects:
       protocol: TCP
       targetPort: 8080
     selector:
-      deploymentconfig: cna-spring-hello
+      deploymentconfig: cna-spring-persistence
     sessionAffinity: None
     type: ClusterIP
   status:
@@ -114,11 +124,10 @@ objects:
       openshift.io/host.generated: "true"
     creationTimestamp: null
     labels:
-      app: cna-spring-hello
+      app: cna-spring-persistence
       project: cloudtrain
-    name: cna-spring-hello
+    name: cna-spring-persistence
   spec:
-    host: cna-spring-hello-hm-fwp-cna-development.a3c1.starter-us-west-1.openshiftapps.com
     port:
       targetPort: 8080-tcp
     tls:
@@ -126,16 +135,6 @@ objects:
       termination: edge
     to:
       kind: Service
-      name: cna-spring-hello
+      name: cna-spring-persistence
       weight: 100
     wildcardPolicy: None
-  status:
-    ingress:
-    - conditions:
-      - lastTransitionTime: 2018-05-06T06:58:54Z
-        status: "True"
-        type: Admitted
-      host: cna-spring-hello-hm-fwp-cna-development.a3c1.starter-us-west-1.openshiftapps.com
-      routerCanonicalHostname: elb.a3c1.starter-us-west-1.openshiftapps.com
-      routerName: router
-      wildcardPolicy: None
