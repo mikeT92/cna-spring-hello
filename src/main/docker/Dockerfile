@@ -5,7 +5,8 @@ COPY docker-entrypoint.sh /opt/springboot/bin/
 RUN chmod a+x /opt/springboot/bin/docker-entrypoint.sh
 
 ENV JAVA_OPTS "-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
-ENV SPRINGBOOT_OPTS ""
+ENV SPRING_PROFILES_ACTIVE default
+ENV CNAP_CLOUD local 
 
 EXPOSE 8080
 
