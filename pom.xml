@@ -53,8 +53,8 @@
 		</dependency>
 		<dependency>
 			<groupId>edu.hm.cs.fwp.cloud</groupId>
-			<artifactId>cna-openshift-cloud-connector</artifactId>
-			<version>0.8.0</version>
+			<artifactId>cna-kubernetes-cloud-connector</artifactId>
+			<version>0.8.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -141,6 +141,8 @@
 			<properties>
 				<!-- <spring-boot.repackage.skip>true</spring-boot.repackage.skip> -->
 				<target.route>http://192.168.99.100:8080</target.route>
+				<maven.install.skip>true</maven.install.skip>
+				<maven.deploy.skip>true</maven.deploy.skip>
 			</properties>
 			<build>
 				<plugins>
@@ -222,74 +224,72 @@
 									</images>
 								</configuration>
 							</execution>
-							<!--
-								<execution>
+							<execution>
 								<id>start-docker-containers</id>
 								<phase>pre-integration-test</phase>
 								<goals>
-								<goal>start</goal>
+									<goal>start</goal>
 								</goals>
 								<configuration>
-								<images>
-								<image>
-								<alias>springboot-first</alias>
-								<name>${docker.image.name}</name>
-								<external>
-								<type>compose</type>
-								<basedir>src/test/docker</basedir>
-								<composeFile>docker-compose.yml</composeFile>
-								</external>
-								<run>
-								<wait>
-								<http>
-								<url>${target.route}</url>
-								<method>GET</method>
-								<status>200..404</status>
-								</http>
-								<time>20000</time>
-								</wait>
-								</run>
-								</image>
-								</images>
+									<images>
+										<image>
+											<alias>${project.artifactId}</alias>
+											<name>${docker.image.name}</name>
+											<external>
+												<type>compose</type>
+												<basedir>src/test/docker</basedir>
+												<composeFile>docker-compose.yml</composeFile>
+											</external>
+											<run>
+												<wait>
+													<http>
+														<url>${target.route}/actuator/health</url>
+														<method>GET</method>
+														<status>200..404</status>
+													</http>
+													<time>20000</time>
+												</wait>
+											</run>
+										</image>
+									</images>
 								</configuration>
-								</execution>
-								<execution>
+							</execution>
+							<execution>
 								<id>stop-docker-containers</id>
 								<phase>post-integration-test</phase>
 								<goals>
-								<goal>stop</goal>
+									<goal>stop</goal>
 								</goals>
 								<configuration>
-								<images>
-								<image>
-								<alias>springboot-first</alias>
-								<name>${docker.image.name}</name>
-								<external>
-								<type>compose</type>
-								<basedir>src/test/docker</basedir>
-								<composeFile>docker-compose.yml</composeFile>
-								</external>
-								</image>
-								</images>
+									<images>
+										<image>
+											<alias>${project.artifactId}</alias>
+											<name>${docker.image.name}</name>
+											<external>
+												<type>compose</type>
+												<basedir>src/test/docker</basedir>
+												<composeFile>docker-compose.yml</composeFile>
+											</external>
+										</image>
+									</images>
 								</configuration>
-								</execution>
-							-->
+							</execution>
 						</executions>
 					</plugin>
-					<!--
-						<plugin>
+					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-failsafe-plugin</artifactId>
 						<configuration>
-						<skipTests>false</skipTests>
-						<forkCount>0</forkCount>
-						<includes><include>**/*SystemTest.java</include></includes>
-						<systemPropertyVariables>
-						<target.route>${target.route}</target.route>
-						</systemPropertyVariables>
+							<skipTests>false</skipTests>
+							<forkCount>0</forkCount>
+							<includes>
+								<include>**/*SystemTest.java</include>
+							</includes>
+							<systemPropertyVariables>
+								<target.route>${target.route}</target.route>
+							</systemPropertyVariables>
 						</configuration>
-						</plugin>
-					-->
+					</plugin>
 				</plugins>
 			</build>
 		</profile>

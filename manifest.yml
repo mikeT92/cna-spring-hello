@@ -1,9 +1,9 @@
 ---
 applications:
-- name: cna-spring-hello
-  memory: 1024M
+- name: cna-spring-persistence
+  memory: 512M
   buildpack: java_buildpack
   services:
-  - postgres-cna-spring-first
+  - postgresql-spring-persistence
   
   

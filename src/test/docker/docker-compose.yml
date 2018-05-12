@@ -9,28 +9,30 @@ version: '2'
 
 services:
 
-  postgres-first:
+  postgres-spring-persistence:
     image: postgres:latest
     volumes:
-      - postgres-first-data:/var/lib/postgresql/data
+      - postgres-spring-persistence-data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: first
       POSTGRES_PASSWORD: changeit
       POSTGRES_DB: db_first
 
-  springboot-first:
-    image: hmfwpcna/cna-spring-first:latest
+  cna-spring-persistence:
+    image: hmfwpcna/cna-spring-persistence:latest
     ports:
       - "8080:8080"
     environment:
-      POSTGRESQL_SERVICE: postgres-first
-      POSTGRESQL_USER: first
-      POSTGRESQL_PASSWORD: changeit
-      POSTGRESQL_DATABASE: db_first
+      CNAP_CLOUD: openshift
+      SPRING_PROFILES_ACTIVE: cloud
+      POSTGRES_DB_HOST: postgres-spring-persistence
+      POSTGRES_DB_USER: first
+      POSTGRES_DB_PASSWORD: changeit
+      POSTGRES_DB_NAME: db_first
       
 volumes:
 
-  postgres-first-data:
+  postgres-spring-persistence-data:
 
 
 
