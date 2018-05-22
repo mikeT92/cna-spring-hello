@@ -1,24 +1,36 @@
 package edu.hm.cs.fwp.cloud.hello.core.entity;
 
-import java.util.Locale;
 import java.util.UUID;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.GenericGenerator;
+
+@Entity
+@Table(name = "t_message", schema = "cna_spring_persistence")
 public class Message {
 
+	@Id
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+	@Column(name = "id")
 	private UUID id;
 
+	@NotNull
+	@Column(name = "code")
 	private String code;
 
+	@NotNull
+	@Column(name = "text")
 	private String text;
-
-	private Locale locale;
 
 	public Message() {
 		super();
-	}
-
-	public Message(UUID id) {
-		this.id = id;
 	}
 
 	public UUID getId() {
@@ -39,14 +51,6 @@ public class Message {
 
 	public void setText(String text) {
 		this.text = text;
-	}
-
-	public Locale getLocale() {
-		return locale;
-	}
-
-	public void setLocale(Locale locale) {
-		this.locale = locale;
 	}
 
 	@Override

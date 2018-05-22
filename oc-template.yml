@@ -61,7 +61,7 @@ objects:
               secretKeyRef:
                 key: database-name
                 name: postgresql-spring-persistence
-          image: hmfwpcna/cna-spring-persistence:0.8.0
+          image: hmfwpcna/cna-spring-persistence:0.9.0
           imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3

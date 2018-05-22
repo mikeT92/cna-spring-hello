@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>edu.hm.cs.fwp.cloud</groupId>
 	<artifactId>cna-spring-persistence</artifactId>
-	<version>0.8.0</version>
+	<version>0.9.0</version>
 	<packaging>jar</packaging>
 	<name>cna-spring-persistence</name>
 	<description>Demo cloud native java application based on Spring Boot / Spring Cloud using a PostgreSQL DB as a service</description>
@@ -54,8 +54,22 @@
 		<dependency>
 			<groupId>edu.hm.cs.fwp.cloud</groupId>
 			<artifactId>cna-kubernetes-cloud-connector</artifactId>
-			<version>0.8.1</version>
+			<version>0.8.3</version>
 		</dependency>
+		<!-- persistence -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+		</dependency>
+		<!-- test stuff -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
