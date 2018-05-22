@@ -256,13 +256,18 @@
 											</external>
 											<run>
 												<wait>
-													<http>
-														<url>${target.route}/actuator/health</url>
+													<!--
+														<http>
+														<url>${target.route}/probes/readiness</url>
 														<method>GET</method>
-														<status>200..404</status>
-													</http>
+														<status>200</status>
+														</http>4
+													-->
 													<time>20000</time>
 												</wait>
+												<log>
+													<date>ISO8601</date>
+												</log>
 											</run>
 										</image>
 									</images>
