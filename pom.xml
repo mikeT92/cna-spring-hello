@@ -96,6 +96,11 @@
 					<version>0.25.2</version>
 				</plugin>
 				<plugin>
+					<groupId>com.dkanejs.maven.plugins</groupId>
+					<artifactId>docker-compose-maven-plugin</artifactId>
+					<version>1.0.5</version>
+				</plugin>
+				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-enforcer-plugin</artifactId>
 					<version>3.0.0-M1</version>
@@ -238,59 +243,32 @@
 									</images>
 								</configuration>
 							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>com.dkanejs.maven.plugins</groupId>
+						<artifactId>docker-compose-maven-plugin</artifactId>
+						<executions>
 							<execution>
 								<id>start-docker-containers</id>
 								<phase>pre-integration-test</phase>
 								<goals>
-									<goal>start</goal>
+									<goal>up</goal>
 								</goals>
 								<configuration>
-									<images>
-										<image>
-											<alias>${project.artifactId}</alias>
-											<name>${docker.image.name}</name>
-											<external>
-												<type>compose</type>
-												<basedir>src/test/docker</basedir>
-												<composeFile>docker-compose.yml</composeFile>
-											</external>
-											<run>
-												<wait>
-													<!--
-														<http>
-														<url>${target.route}/probes/readiness</url>
-														<method>GET</method>
-														<status>200</status>
-														</http>4
-													-->
-													<time>20000</time>
-												</wait>
-												<log>
-													<date>ISO8601</date>
-												</log>
-											</run>
-										</image>
-									</images>
+									<composeFile>${project.basedir}/src/test/docker/docker-compose.yml</composeFile>
+									<detachedMode>true</detachedMode>
+									<verbose>false</verbose>
 								</configuration>
 							</execution>
 							<execution>
 								<id>stop-docker-containers</id>
 								<phase>post-integration-test</phase>
 								<goals>
-									<goal>stop</goal>
+									<goal>down</goal>
 								</goals>
 								<configuration>
-									<images>
-										<image>
-											<alias>${project.artifactId}</alias>
-											<name>${docker.image.name}</name>
-											<external>
-												<type>compose</type>
-												<basedir>src/test/docker</basedir>
-												<composeFile>docker-compose.yml</composeFile>
-											</external>
-										</image>
-									</images>
+									<composeFile>${project.basedir}/src/test/docker/docker-compose.yml</composeFile>
 								</configuration>
 							</execution>
 						</executions>

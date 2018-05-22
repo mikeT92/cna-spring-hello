@@ -45,7 +45,7 @@ objects:
           - name: SPRING_PROFILES_ACTIVE
             value: cloud
           - name: POSTGRES_DB_HOST
-            value: postgresql-spring-persistence.hm-fwp-cna-development.svc
+            value: postgresql-spring-persistence
           - name: POSTGRES_DB_USER
             valueFrom:
               secretKeyRef:
